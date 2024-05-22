@@ -5,11 +5,16 @@ import os
 import pickle
 import csv
 import random
+import time
+import datetime
 # python -m mlgame -i ./ml/ml_play_manual.py . --difficulty NORMAL --level 5
 class MLPlay:
     def __init__(self, *args, **kwargs):
+        self.current_time = datetime.datetime.today().strftime("%m%d_%H_%M_%S")
         self.game_count = 1  # 遊戲計數器
-        self.model_load()        
+        self.ball_catch_time = 0
+        self.model = None
+        self.model_load()
         self.ball_served = False
         self.record = []
         self.features = []
@@ -28,22 +33,37 @@ class MLPlay:
             keyboard = []
         if scene_info["status"] == "GAME_OVER":#遊戲結束
             self.game_count += 1  # 遊戲結束時遞增遊戲計數器
+            ball_catch_dir = f"ml/ball_catch_time/{self.current_time}/"
+            if not os.path.exists(ball_catch_dir):
+                os.makedirs(ball_catch_dir)
+            with open(ball_catch_dir + '/ball_catch_times' + '.csv', 'a', newline='') as f:
+                data = [[self.game_count, self.ball_catch_time]]                
+                csv.writer(f).writerows(data)
             return "RESET"
         elif scene_info["status"] == "GAME_PASS":#遊戲通過
             print("\nGAME_PASS!!!")
             print("第",self.game_count,"場完成")
+            ball_catch_dir = f"ml/ball_catch_time/{self.current_time}/"
+            if not os.path.exists(ball_catch_dir):
+                os.makedirs(ball_catch_dir)
+            with open(ball_catch_dir + '/ball_catch_times' + '.csv', 'a', newline='') as f:
+                data = [[self.game_count, self.ball_catch_time]]                
+                csv.writer(f).writerows(data)
             raise Exception("exit")
         if not self.ball_served:#發球
             command = "SERVE_TO_RIGHT"
             self.ball_served = True
         else:
+            start_time = time.time()
             platformX = scene_info['platform'][0]
             x, y = scene_info['ball']
             frame = scene_info['frame']
             feature = self.feature_get(scene_info)
+            # print(self.model)
             if self.model is not None and y < 395 + 7:
-                if random.random() > 0.1:#一定機率不套用模型                    
+                if random.random() > 0.05:#一定機率不套用模型                     
                     targetX = self.predict(feature)                    
+                    targetX = self.postprocess(targetX)
                     if platformX + 15 > targetX:
                         command = "MOVE_LEFT"
                     elif platformX + 15 < targetX:
@@ -53,7 +73,16 @@ class MLPlay:
                 else:
                     command = random.choice(["MOVE_LEFT", "MOVE_RIGHT", None])
             if y == 395:#平台接到球
+                self.ball_catch_time += 1
                 print('hit at frame ', frame)
+            process_time = time.time() - start_time
+            DIR = f"ml/process_time/{self.current_time}/"
+            if not os.path.exists(DIR):
+                os.makedirs(DIR)
+            with open( DIR + f"process_time_{self.game_count}" + '.csv', 'a', newline='') as f:
+                data = [[frame, process_time]]                
+                csv.writer(f).writerows(data)
+
 
         return command
     def reset(self):
@@ -77,10 +106,10 @@ class MLPlay:
 
         self.train(self.features, self.targets)
 
-        self.model_save(DIR, Temp)
-
+        self.model_save(DIR, Temp)        
+        self.ball_catch_time = 0
         self.ball_served = False
-        self.record = []
+        self.record = []        
         print("Game", self.game_count , "=============================")  # 顯示遊戲次數
     def feature_get(self, scene_info):
 
@@ -124,18 +153,20 @@ class MLPlay:
 
         The method checks if the 'model.pickle' file exists in the same directory as the script.
         If the file exists, it loads the model from the pickle file and assigns it to the 'model' attribute of the class.
-        If the file does not exist, the 'model' attribute remains None.
+        If the file does not exist, creat a new model.
 
         Returns:
             None
 
         """
-        self.model = None   
         DIR = os.path.dirname(__file__)
-        if os.path.exists(DIR+'/model.pickle'):
-            with open(DIR+'/model.pickle', 'rb') as f:
-                self.model = pickle.load(f)                
-            print('model loaded')
+        if not os.path.exists(DIR+'/model.pickle'):
+            with open(DIR+'/model.pickle', 'wb') as f:
+                pickle.dump(None, f)        
+            print("-----Creat a New Model-----")
+        with open(DIR+'/model.pickle', 'rb') as f:
+            self.model = pickle.load(f)
+        print("-----Model Loaded-----")
 
     def model_save(self, DIR, features):
         """
@@ -148,7 +179,6 @@ class MLPlay:
         Returns:
             None
         """
-
         with open(DIR + '/features' + '.csv', 'w', newline='') as f:
             csv.writer(f, delimiter=',').writerows(features)
 
@@ -174,7 +204,6 @@ class MLPlay:
         Raises:
             FileNotFoundError: If the feature or target files are not found in the specified directory.
         """
-
         if os.path.exists(DIR + '/targets.pickle'):
             with open(DIR + '/targets.pickle', 'rb') as f:
                 self.targets = pickle.load(f)
@@ -186,7 +215,6 @@ class MLPlay:
             if y >= (395 - 7) and y <= (395 + 7):
                 ii = i
                 break
-
         targetX = feature[ii][1]
         Temp = []
         i = 0
@@ -201,7 +229,6 @@ class MLPlay:
             if y == 395 and i > 4:
                 break
         print("增加feature數量:", i)
-
         return Temp
 
     def train(self, features, targets):
@@ -231,4 +258,12 @@ class MLPlay:
         targetX = int(self.model.predict([feature[1:]])[0])
 
         return targetX
+    
+    def postprocess(self, number):
+        rounded_number = round(number)
+        remainder = rounded_number % 5
+        if remainder <= 2.5:
+            return rounded_number - remainder
+        else:
+            return rounded_number + (5 - remainder)    
 
