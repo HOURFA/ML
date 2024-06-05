@@ -1,0 +1,83 @@
+{
+    "title": "ML PingPong Game Demo",
+    "elements": [
+        {
+			"type": "label", 
+			"text": "Iterations:", 
+			"default": "1",
+			"choose_file": false
+		},
+        {
+			"type": "label", 
+			"text": "GAME_OVER_SCORE:", 
+			"default": "15",
+			"choose_file": false
+		},
+        {
+			"type": "label", 
+			"text": "INIT_VEL:", 
+			"default": "7",
+			"choose_file": false
+		},
+        {
+			"type": "label", 
+			"text": "FPS:", 
+			"default": "30",
+			"choose_file": false
+		},
+		{
+            "type": "dropdown",
+            "label": "DIFFICULTY",
+            "options": ["EASY", "NORMAL", "HARD"],
+            "default": "HARD"
+        },
+		{
+			"type": "label", 
+			"text": "AI_1_PATH:", 
+			"default": "./ml/ml_play_template_1P_AI.py",
+			"choose_file": true
+		},
+        {
+			"type": "label", 
+			"text": "AI_2_PATH:", 
+			"default": "./ml/ml_play_template_2P_AI.py",
+			"choose_file": true
+		},
+        {
+            "type": "file",
+            "label": "HEATMAP",
+            "button_text": "Choose file",
+            "visualize_text": "Visualize",
+            "image_type": 0
+        },
+        {
+            "type": "file",
+            "label": "LINECHART",
+            "button_text": "Choose file",
+            "visualize_text": "Visualize",
+            "image_type": 1
+        },
+        {
+            "type": "file",
+            "label": "HISTOGRAM",
+            "button_text": "Choose file",
+            "visualize_text": "Visualize",
+            "image_type": 2
+        },		
+        {
+            "type": "button",
+            "text": "Execute",
+            "command": "execute_commands_thread",
+			"bg": "#4CAF50",
+			"fg": "white"
+        },
+        {
+            "type": "button",
+            "text": "Stop",
+            "command": "stop_commands_thread",
+			"bg": "#f44336",
+			"fg": "white"
+        }
+		
+    ]
+}
