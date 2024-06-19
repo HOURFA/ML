@@ -5,7 +5,7 @@ from dataset.mnist import load_mnist
 
 
 batch_size = 100;
-epoch = 5000;
+epoch = 10000;
 learning_rate = 0.1;
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
 mlp = MLPClassifier(hidden_layer_sizes=(50,), max_iter=epoch, alpha=1e-4,
