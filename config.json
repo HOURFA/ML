@@ -1,0 +1,325 @@
+{   
+    "game": 
+    [
+        {
+        "title" : "PingPong",
+        "elements": [
+            {
+                "type": "label", 
+                "text": "Iterations", 
+                "default": "1",
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "GAME_OVER_SCORE", 
+                "default": "15",
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "INIT_VEL", 
+                "default": "7",
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "FPS", 
+                "default": "30",
+                "text_entry": true
+            },
+            {
+                "type": "label",
+                "text": "DIFFICULTY",
+                "options": ["EASY", "NORMAL", "HARD"],
+                "default": "HARD",
+                "text_entry": false,
+                "dropdown": true
+            },                      
+            {
+                "type": "label", 
+                "text": "AI_1_PATH", 
+                "default": "./pingpong/SourceCode/ml/ml_play_template_1P_AI.py",
+                "choose_file": true,
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "AI_2_PATH", 
+                "default": "./pingpong/SourceCode/ml/ml_play_template_2P_AI.py",
+                "choose_file": true,
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "CONFIG_PATH", 
+                "default": "./pingpong/SourceCode/",
+                "choose_dir": true,
+                "text_entry": true
+            },            
+            {
+                "type": "file",
+                "label": "HEATMAP",
+                "button_text": "Choose file",
+                "visualize_text": "Visualize",
+                "default": "",
+                "image_type": 0
+            },
+            {
+                "type": "file",
+                "label": "LINECHART",
+                "button_text": "Choose file",
+                "visualize_text": "Visualize",
+                "default": "",
+                "image_type": 1
+            },
+            {
+                "type": "file",
+                "label": "HISTOGRAM",
+                "button_text": "Choose file",
+                "visualize_text": "Visualize",
+                "default": "",
+                "image_type": 2
+            },		
+            {
+                "type": "button",
+                "text": "Execute",
+                "command": "execute_commands_thread"
+            },
+            {
+                "type": "button",
+                "text": "Stop",
+                "command": "stop_commands_thread"
+            }
+            
+        ],
+        "test" : 3,
+        "options":[
+            "-i",
+            "-i",
+            "-f",
+            "--config",
+            "--difficulty",
+            "--game_over_score",
+            "--init_vel"
+        ],
+        "parameters":[
+            "AI_1_PATH",
+            "AI_2_PATH",
+            "FPS",
+            "CONFIG_PATH",
+            "DIFFICULTY",
+            "GAME_OVER_SCORE",
+            "INIT_VEL"
+        ],
+        "model":{
+            "Ball":{
+                "visualize_data":{
+                    "heatmap" :{
+                        "title" : "ball",
+                        "x-axis" : "ball_x",
+                        "y-axis" : "ball_y"
+                    },
+                    "linechart" :{
+                        "title" : "Traning",
+                        "x-axis" : "Scores",
+                        "y-axis" : "Ball Catch Times"
+                    },          
+                    "histogram" :{
+                        "ball_x" : 200,
+                        "ball_y" : 500,
+                        "ball_speed_x" : 40,
+                        "ball_speed_y" : 40
+                    }    
+                }
+            }
+        }
+    },
+    {
+        "title": "TankMan",
+        "elements": [
+            {
+                "type": "label", 
+                "text": "Iterations", 
+                "default": "1",
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "GREEN_TEAM_NUM", 
+                "default": "1",
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "BLUE_TEAM_NUM", 
+                "default": "1",
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "FPS", 
+                "default": "1000",
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "FRAME_LIMIT", 
+                "default": "1500",
+                "text_entry": true
+            },
+            {
+                "type": "label", 
+                "text": "CONFIG_PATH", 
+                "default": "./TankMan-main/SourceCode/",
+                "text_entry": true,
+                "choose_dir": true
+            },
+            {
+                "type": "label", 
+                "text": "AI_1_PATH", 
+                "default": "./TankMan-main/SourceCode/ml/ml_play.py",
+                "text_entry": true,
+                "choose_file": true
+            },
+            {
+                "type": "label", 
+                "text": "AI_2_PATH", 
+                "default": "./TankMan-main/SourceCode/ml/ml_play.py",
+                "text_entry": true,
+                "choose_file": true
+            },
+            {
+                "type": "label", 
+                "text": "IS_MANUAL", 
+                "text_entry": true,
+                "default": "1"
+            },
+            {
+                "type": "label",
+                "text": "COMBINED_MODEL_PATH",
+                "default": "",
+                "text_entry": true,
+                "choose_dir": true
+            },
+            {
+                "type": "label",
+                "text": "COMBINED_MODEL_NAME",
+                "options": ["STRATEGY", "TANK", "GUN"],
+                "default": "STRATEGY",
+                "text_entry": false,
+                "dropdown": true
+            },                           
+            {
+                "type": "file",
+                "label": "HISTOGRAM",
+                "button_text": "Choose file",
+                "visualize_text": "Visualize",
+                "default": "",
+                "image_type": 2
+            },		        
+            {
+                "type": "button",
+                "text": "Execute",
+                "command": "execute_commands_thread"
+            },
+            {
+                "type": "button",
+                "text": "Stop",
+                "command": "stop_commands_thread"
+            },
+            {
+                "type": "button",
+                "text": "Combined",
+                "command": "combined"
+            }            
+            
+        ],
+        "test" : 3,
+        "options":[
+            "-i",
+            "-i",
+            "-f",
+            "--config",
+            "--green_team_num",
+            "--blue_team_num",
+            "--frame_limit",
+            "--is_manual"
+        ],
+        "parameters":[
+            "AI_1_PATH",
+            "AI_2_PATH",
+            "FPS",
+            "CONFIG_PATH",
+            "GREEN_TEAM_NUM",
+            "BLUE_TEAM_NUM",
+            "FRAME_LIMIT",
+            "IS_MANUAL"
+        ],
+        "model":{
+            "STRATEGY":{
+                "visualize_data":{
+                    "heatmap" :{
+                        "title" : "ball",
+                        "x-axis" : "ball_x",
+                        "y-axis" : "ball_y"
+                    },
+                    "linechart" :{
+                        "title" : "Traning",
+                        "x-axis" : "Scores",
+                        "y-axis" : "Ball Catch Times"
+                    },          
+                    "histogram" :{
+                        "oil" : 100,
+                        "bullet" : 10
+                    }
+                }
+            },
+            "TANK":{
+                "visualize_data":{
+                    "heatmap" :{
+                        "title" : "ball",
+                        "x-axis" : "ball_x",
+                        "y-axis" : "ball_y"
+                    },
+                    "linechart" :{
+                        "title" : "Traning",
+                        "x-axis" : "Scores",
+                        "y-axis" : "Ball Catch Times"
+                    },          
+                    "histogram" :{
+                        "source_x" : 1000,
+                        "source_y" :  600,
+                        "destination_x": 1000,
+                        "destination_y":  600,
+                        "angle": 360,
+                        "direction": 8,
+                        "distance" : 1166,
+                        "wallorenemy" : 2
+                    }
+                }
+            },            
+            "GUN":{
+                "visualize_data":{
+                    "heatmap" :{
+                        "title" : "ball",
+                        "x-axis" : "ball_x",
+                        "y-axis" : "ball_y"
+                    },
+                    "linechart" :{
+                        "title" : "Traning",
+                        "x-axis" : "Scores",
+                        "y-axis" : "Ball Catch Times"
+                    },          
+                    "histogram" :{
+                        "gun_angle" : 360,
+                        "direction" : 8
+                    }
+                }
+            }
+        }        
+    }    
+    ]
+}
+
+
