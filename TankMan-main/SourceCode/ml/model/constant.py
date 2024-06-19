@@ -33,8 +33,8 @@ WALL_WIDTH = 50
 defaultdict = {
     "STRATEGY_2P": {"feature": [[0, 0]], "target": [0]},
     "TANK_2P": {"feature": [[0, 0, 0, 0, 0, 0, 0, 0]], "target": [0]},
-    "GUN_2P": {"feature": [[0, 0, 0]], "target": [0]},
+    "GUN_2P": {"feature": [[0, 0]], "target": [0]},
     "STRATEGY_1P": {"feature": [[0, 0]], "target": [0]},
     "TANK_1P": {"feature": [[0, 0, 0, 0, 0, 0, 0, 0]], "target": [0]},
-    "GUN_1P": {"feature": [[0, 0, 0]], "target": [0]}    
+    "GUN_1P": {"feature": [[0, 0]], "target": [0]}    
 }
