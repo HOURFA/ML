@@ -1,5 +1,6 @@
 ## 修改檔案
   必須修改mlgame中__main__.py，才可以通過GUI讀取到遊戲的配置文件。
+  
   將
   ```bash
     # 1. parse command line
